@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 
@@ -13,6 +14,12 @@ public class StudentService {
 
     private Long nextId = 0L;
 
+    @PostConstruct
+    private void init(){
+        addStudent(new Student(0L,"Harry Potter",13));
+        addStudent(new Student(0L,"Hermione Granger",13));
+        addStudent(new Student(0L,"Ronald Weasley",13));
+    }
     public Student addStudent(Student student){
         student.setId(nextId++);
         students.put(student.getId(),student);
@@ -22,7 +29,8 @@ public class StudentService {
         return students.get(id);
     }
     public Student updateStudent(Student student){
-        return students.put(student.getId(),student);
+        students.put(student.getId(),student);
+        return student;
     }
 
     public Student deleteStudent(Long id) {

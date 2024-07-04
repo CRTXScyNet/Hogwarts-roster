@@ -20,7 +20,7 @@ public class FacultyService {
         return faculty;
     }
     @PostConstruct
-    public void init(){
+    private void init(){
         addFaculty(new Faculty(0L,"Griffindor", "orange"));
         addFaculty(new Faculty(0L,"Hufflepuff", "yellow"));
         addFaculty(new Faculty(0L,"Ravenclaw", "blue"));
