@@ -9,7 +9,7 @@ import ru.hogwarts.school.service.StudentService;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("student")
+@RequestMapping("students")
 public class StudentController {
     private final StudentService studentService;
 
@@ -30,12 +30,16 @@ public class StudentController {
         }
         return ResponseEntity.ok(student);
     }
-
+    @GetMapping()
+    public Collection<Student> getStudentByAge(@RequestParam int age){
+        return studentService.getStudentByAge(age);
+    }
+    @GetMapping("all")
+    public Collection<Student> getAllStudents(){
+        return studentService.getAllStudents();
+    }
     @PutMapping
     public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
-        if (studentService.getStudent(student.getId()) == null){
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(studentService.updateStudent(student));
     }
 
@@ -47,8 +51,5 @@ public class StudentController {
         }
         return ResponseEntity.ok(student);
     }
-    @GetMapping()
-    public Collection<Student> getStudentByAge(@RequestParam int age){
-       return studentService.getStudentByAge(age);
-    }
+
 }

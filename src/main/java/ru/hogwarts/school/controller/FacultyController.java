@@ -9,7 +9,7 @@ import ru.hogwarts.school.service.FacultyService;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("faculty")
+@RequestMapping("faculties")
 public class FacultyController {
     private final FacultyService facultyService;
 
@@ -22,7 +22,7 @@ public class FacultyController {
         return facultyService.addFaculty(faculty);
     }
 
-    @GetMapping("{id:\\d+}")
+    @GetMapping("{id}")
     public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
         Faculty faculty = facultyService.getFaculty(id);
         if (faculty == null){
@@ -30,7 +30,14 @@ public class FacultyController {
         }
         return ResponseEntity.ok(faculty);
     }
-
+    @GetMapping()
+    public Collection<Faculty> getFacultyByColor(@RequestParam String color){
+        return facultyService.getFacultyByColor(color);
+    }
+    @GetMapping("all")
+    public Collection<Faculty> getAllFaculty(){
+        return facultyService.getAllFaculties();
+    }
     @PutMapping
     public ResponseEntity<Faculty> updateFaculty(@RequestBody Faculty faculty) {
         Faculty exixtedFaculty = facultyService.getFaculty(faculty.getId());
@@ -49,8 +56,5 @@ public class FacultyController {
         return ResponseEntity.ok(faculty);
     }
 
-    @GetMapping("{color}")
-    public Collection<Faculty> getFacultyByColor(@PathVariable String color){
-        return facultyService.getFacultyByColor(color);
-    }
+
 }
