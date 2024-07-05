@@ -40,10 +40,6 @@ public class FacultyController {
     }
     @PutMapping
     public ResponseEntity<Faculty> updateFaculty(@RequestBody Faculty faculty) {
-        Faculty exixtedFaculty = facultyService.getFaculty(faculty.getId());
-        if (exixtedFaculty == null){
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(facultyService.updateFaculty(faculty));
     }
 

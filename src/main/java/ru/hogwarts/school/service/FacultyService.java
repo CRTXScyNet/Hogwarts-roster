@@ -42,9 +42,15 @@ public class FacultyService {
     }
 
     public Faculty deleteFaculty(Long id) {
-        Faculty faculty = facultyRepository.findById(id).get();
-        facultyRepository.deleteById(id);
-        return faculty;
+        boolean facultyDoesNotExist = facultyRepository.findById(id).isEmpty();
+
+        if (facultyDoesNotExist) {
+            return null;
+        } else {
+            Faculty faculty = facultyRepository.findById(id).get();
+            facultyRepository.deleteById(id);
+            return faculty;
+        }
     }
 
     public Collection<Faculty> getFacultyByColor(String color) {
