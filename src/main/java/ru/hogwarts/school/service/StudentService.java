@@ -29,7 +29,7 @@ public class StudentService {
     }
 
     public Student getStudent(Long id) {
-        return studentRepository.findById(id).get();
+        return studentRepository.findById(id).orElse(null);
     }
 
     public Student updateStudent(Student student) {
@@ -37,16 +37,7 @@ public class StudentService {
     }
 
     public Student deleteStudent(Long id) {
-        boolean studentDoesNotExist = studentRepository.findById(id).isEmpty();
-        if (studentDoesNotExist){
-            return null;
-        }else {
-            Student student = studentRepository.findById(id).get();
-            studentRepository.deleteById(id);
-            return student;
-        }
-
-
+            return studentRepository.findById(id).orElse(null);
     }
 
     public Collection<Student> getStudentByAge(int age) {
