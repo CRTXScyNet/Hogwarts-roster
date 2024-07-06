@@ -3,13 +3,14 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
 
 @RestController
-@RequestMapping("students")
+@RequestMapping("/students")
 public class StudentController {
     private final StudentService studentService;
 
@@ -22,7 +23,7 @@ public class StudentController {
         return studentService.addStudent(student);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Student> getStudent(@PathVariable Long id) {
         Student student = studentService.getStudent(id);
         if (student == null) {
@@ -30,14 +31,31 @@ public class StudentController {
         }
         return ResponseEntity.ok(student);
     }
-    @GetMapping()
-    public Collection<Student> getStudentByAge(@RequestParam int age){
+    @GetMapping("/{id}/faculty")
+    public ResponseEntity<Faculty> getFaculty(@PathVariable long id) {
+        Faculty faculty = studentService.getFaculty(id);
+        if (faculty == null){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(faculty);
+    }
+    @GetMapping("/age")
+    public Collection<Student> getStudentByAge(@RequestParam int age) {
         return studentService.getStudentByAge(age);
     }
-    @GetMapping("all")
-    public Collection<Student> getAllStudents(){
+
+    @GetMapping("/all")
+    public Collection<Student> getAllStudents() {
         return studentService.getAllStudents();
     }
+
+    @GetMapping()
+    public Collection<Student> getStudentByAgeBetween(@RequestParam int min, @RequestParam int max) {
+        return studentService.findByAgeBetween(min, max);
+    }
+
+
+
     @PutMapping
     public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
         return ResponseEntity.ok(studentService.updateStudent(student));
@@ -46,7 +64,7 @@ public class StudentController {
     @DeleteMapping("{id}")
     public ResponseEntity<Student> deleteStudent(@PathVariable Long id) {
         Student student = studentService.deleteStudent(id);
-        if (student == null){
+        if (student == null) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(student);
