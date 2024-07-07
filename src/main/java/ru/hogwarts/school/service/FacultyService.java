@@ -1,21 +1,21 @@
 package ru.hogwarts.school.service;
 
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
+import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
 
 @Service
 public class FacultyService {
-    @Autowired
     private final FacultyRepository facultyRepository;
+    private final StudentRepository studentRepository;
 
-    public FacultyService(FacultyRepository repository) {
+    public FacultyService(FacultyRepository repository, StudentRepository studentRepository) {
         this.facultyRepository = repository;
+        this.studentRepository = studentRepository;
     }
 
     public Faculty addFaculty(Faculty faculty) {
@@ -53,11 +53,12 @@ public class FacultyService {
     public Collection<Faculty> getAllFaculties() {
         return facultyRepository.findAll();
     }
-    public Faculty findByNameOrColor(String string){
+
+    public Faculty findByNameOrColor(String string) {
         Faculty faculty;
-        if (string != null && !string.isBlank()){
+        if (string != null && !string.isBlank()) {
             faculty = facultyRepository.findByNameIgnoreCase(string);
-            if (faculty!=null){
+            if (faculty != null) {
                 return faculty;
             }
             faculty = facultyRepository.findByColorIgnoreCase(string);
@@ -65,11 +66,8 @@ public class FacultyService {
         }
         return null;
     }
-    public Collection<Student> getStudents(long id){
-        Faculty faculty = facultyRepository.findById(id).orElse(null);
-        if(faculty == null){
-            return null;
-        }
-        return faculty.getStudents();
+
+    public Collection<Student> getStudents(long id) {
+        return studentRepository.findByFacultyId(id);
     }
 }
