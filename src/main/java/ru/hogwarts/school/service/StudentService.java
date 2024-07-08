@@ -1,10 +1,9 @@
 package ru.hogwarts.school.service;
 
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
@@ -13,9 +12,11 @@ import java.util.Collection;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final FacultyRepository facultyRepository;
 
-    public StudentService(StudentRepository repository) {
+    public StudentService(StudentRepository repository, FacultyRepository facultyRepository) {
         this.studentRepository = repository;
+        this.facultyRepository = facultyRepository;
     }
 
 //    @PostConstruct
@@ -38,24 +39,26 @@ public class StudentService {
     }
 
     public Student deleteStudent(Long id) {
-            return studentRepository.findById(id).orElse(null);
+        return studentRepository.findById(id).orElse(null);
     }
 
     public Collection<Student> getStudentByAge(int age) {
-        return studentRepository.findAllByAge(age);
+        return studentRepository.findByAge(age);
     }
 
     public Collection<Student> getAllStudents() {
         return studentRepository.findAll();
     }
-    public Collection<Student> findByAgeBetween(int min, int max){
+
+    public Collection<Student> findByAgeBetween(int min, int max) {
         return studentRepository.findByAgeBetween(min, max);
     }
-    public Faculty getFaculty(long id){
-        Student student = studentRepository.findById(id).orElse(null);
-        if (student == null){
+
+    public Faculty getFaculty(Long id) {
+        id = studentRepository.findFaculty_IdById(id);
+        if (id == null) {
             return null;
         }
-        return student.getFaculty();
+        return facultyRepository.findById(id).orElse(null);
     }
 }

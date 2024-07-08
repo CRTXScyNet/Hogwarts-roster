@@ -1,6 +1,7 @@
 package ru.hogwarts.school.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -10,7 +11,8 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@JsonIgnoreProperties(value = "students")
+@JsonIncludeProperties(value = {"name","color"})
+
 public class Faculty {
     @Id
     @GeneratedValue
