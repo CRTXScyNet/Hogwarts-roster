@@ -43,7 +43,12 @@ public class FacultyService {
     }
 
     public Faculty deleteFaculty(Long id) {
-        return facultyRepository.findById(id).orElse(null);
+        Faculty faculty = facultyRepository.findById(id).orElse(null);
+        if (faculty == null){
+            return null;
+        }
+        facultyRepository.deleteById(faculty.getId());
+        return faculty;
     }
 
     public Collection<Faculty> getFacultyByColor(String color) {

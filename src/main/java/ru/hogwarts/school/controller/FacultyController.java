@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
@@ -17,6 +18,11 @@ public class FacultyController {
         this.facultyService = service;
     }
 
+    @GetMapping("/entry")
+    public String welcome() {
+        return "Welcome to " + this.getClass().getSimpleName();
+    }
+
     @PostMapping
     public Faculty addFaculty(@RequestBody Faculty faculty) {
 
@@ -28,13 +34,16 @@ public class FacultyController {
         Faculty faculty = facultyService.getFaculty(id);
         if (faculty == null) {
             return ResponseEntity.badRequest().build();
+
         }
         return ResponseEntity.ok(faculty);
     }
+
     @GetMapping("{id:\\d+}/students")
-    public ResponseEntity<Collection<Student>> getStudents(@PathVariable long id){
+    public ResponseEntity<Collection<Student>> getStudents(@PathVariable long id) {
         return ResponseEntity.ok(facultyService.getStudents(id));
     }
+
     @GetMapping("/color")
     public Collection<Faculty> getFacultyByColor(@RequestParam("color") String color) {
         return facultyService.getFacultyByColor(color);
@@ -44,10 +53,11 @@ public class FacultyController {
     public Collection<Faculty> getAllFaculty() {
         return facultyService.getAllFaculties();
     }
+
     @GetMapping()
-    public ResponseEntity<Faculty> findByNameOrColor(@RequestParam String part){
+    public ResponseEntity<Faculty> getFacultyByNameOrColor(@RequestParam String part) {
         Faculty faculty = facultyService.findByNameOrColor(part);
-        if (faculty == null){
+        if (faculty == null) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(faculty);

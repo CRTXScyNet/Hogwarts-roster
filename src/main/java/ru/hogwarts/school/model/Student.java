@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@JsonIgnoreProperties(value = {"faculty","id"})
+@JsonIgnoreProperties(value = {"faculty"})
 public class Student {
     @Id
     @GeneratedValue

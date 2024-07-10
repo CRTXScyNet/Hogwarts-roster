@@ -8,11 +8,14 @@ import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.AvatarRepository;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.logging.Logger;
+
 
 @Service
 @Transactional
@@ -22,6 +25,7 @@ public class AvatarService {
     private String avatarsDir;
     private AvatarRepository avatarRepository;
     private StudentService studentService;
+    Logger logger = Logger.getLogger(AvatarService.class.getName());
 
     public AvatarService(AvatarRepository avatarRepository, StudentService service) {
         this.avatarRepository = avatarRepository;
@@ -44,7 +48,7 @@ public class AvatarService {
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(file.getSize());
         avatar.setMediaType(file.getContentType());
-        avatar.setPreview(file.getBytes());
+        avatar.setData(file.getBytes());
         avatarRepository.save(avatar);
     }
 
@@ -60,4 +64,20 @@ public class AvatarService {
         int dot = s.lastIndexOf('.');
         return s.substring(dot + 1);
     }
+
+//    private byte[] generateDataForDB(Path filePath) throws IOException {
+//        try (InputStream is = Files.newInputStream(filePath);
+//             BufferedInputStream bis = new BufferedInputStream(is, 1024);
+//             ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
+//            BufferedImage image = ImageIO.read(bis);
+//
+//            int height = image.getHeight() / (image.getWidth() / 100);
+//            BufferedImage newImage = new BufferedImage(100, height, image.getType());
+//            Graphics2D graphics2D = image.createGraphics();
+//            graphics2D.drawImage(image, 100, height, null);
+//            graphics2D.dispose();
+//            ImageIO.write(newImage, getExtension(filePath.getFileName().toString()), baos);
+//            return baos.toByteArray();
+//        }
+//    }
 }

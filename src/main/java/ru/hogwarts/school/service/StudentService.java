@@ -39,7 +39,12 @@ public class StudentService {
     }
 
     public Student deleteStudent(Long id) {
-        return studentRepository.findById(id).orElse(null);
+        Student student = studentRepository.findById(id).orElse(null);
+        if (student == null){
+            return null;
+        }
+        studentRepository.deleteById(student.getId());
+        return student;
     }
 
     public Collection<Student> getStudentByAge(int age) {
