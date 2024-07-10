@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@JsonIncludeProperties(value = {"name","color"})
+@JsonIncludeProperties(value = {"name","color","id"})
 
 public class Faculty {
     @Id
