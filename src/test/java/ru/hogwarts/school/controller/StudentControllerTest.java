@@ -136,18 +136,4 @@ class StudentControllerTest {
         assertThat(this.restTemplate.getForObject(baseUri + "/" + id, String.class)).isNull();
     }
 
-    @Test
-    void uploadAvatar() throws Exception{
-
-    }
-
-    @Test
-    void downloadAvatar() {
-
-    }
-
-    @Test
-    void downloadAvatarFromDB() {
-
-    }
 }
