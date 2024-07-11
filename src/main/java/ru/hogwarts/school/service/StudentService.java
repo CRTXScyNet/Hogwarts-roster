@@ -43,7 +43,7 @@ public class StudentService {
         if (student == null){
             return null;
         }
-        studentRepository.deleteById(student.getId());
+        studentRepository.deleteById(id);
         return student;
     }
 

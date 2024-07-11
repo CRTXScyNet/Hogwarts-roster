@@ -47,7 +47,7 @@ public class FacultyService {
         if (faculty == null){
             return null;
         }
-        facultyRepository.deleteById(faculty.getId());
+        facultyRepository.deleteById(id);
         return faculty;
     }
 
