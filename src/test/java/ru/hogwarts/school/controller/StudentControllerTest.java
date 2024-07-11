@@ -162,7 +162,8 @@ class StudentControllerTest {
 
     @Test
     void deleteStudent() throws Exception {
-
+        Student student = new Student();
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
         mockMvc.perform(MockMvcRequestBuilders
                 .delete("/students/1"))
                 .andDo(print())
