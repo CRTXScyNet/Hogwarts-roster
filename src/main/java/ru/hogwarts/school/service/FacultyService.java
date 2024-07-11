@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.data.mapping.FactoryMethod;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -43,7 +44,12 @@ public class FacultyService {
     }
 
     public Faculty deleteFaculty(Long id) {
-        return facultyRepository.findById(id).orElse(null);
+        Faculty faculty = facultyRepository.findById(id).orElse(null);
+        if (faculty == null){
+            return null;
+        }
+        facultyRepository.deleteById(id);
+        return faculty;
     }
 
     public Collection<Faculty> getFacultyByColor(String color) {
