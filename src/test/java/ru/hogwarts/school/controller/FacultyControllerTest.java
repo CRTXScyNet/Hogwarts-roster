@@ -16,6 +16,7 @@ import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 import ru.hogwarts.school.service.FacultyService;
 
+import javax.print.attribute.standard.Media;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -72,8 +73,7 @@ class FacultyControllerTest {
         when(facultyRepository.findById(anyLong())).thenReturn(Optional.of(faculty));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculties/1")
-                        .accept(MediaType.APPLICATION_JSON))
+                        .get("/faculties/1"))
                 .andDo(print())
                 .andExpect(jsonPath("$.name").value(faculty.getName()))
                 .andExpect(jsonPath("$.color").value(faculty.getColor()))
@@ -83,9 +83,9 @@ class FacultyControllerTest {
     @Test
     void getStudents() throws Exception {
         List<Student> students = new ArrayList<>();
-        students.add(new Student(0L, "sos", 12));
-        students.add(new Student(0L, "sos", 13));
-        students.add(new Student(0L, "sos", 14));
+        students.add(new Student(0L, "sps", 12));
+        students.add(new Student(0L, "ssp", 13));
+        students.add(new Student(0L, "pss", 14));
 
         when(studentRepository.findByFacultyId(anyLong())).thenReturn(students);
 
@@ -93,28 +93,109 @@ class FacultyControllerTest {
                         .get("/faculties/1/students")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].age").value(12))
                 .andExpect(jsonPath("$[1].age").value(13))
                 .andExpect(jsonPath("$[2].age").value(14));
     }
 
     @Test
-    void getFacultyByColor() {
+    void getFacultyByColor() throws Exception {
+        List<Faculty> faculty = new ArrayList<>();
+        faculty.add(new Faculty(0L, "sps", "sd"));
+        faculty.add(new Faculty(0L, "ssp", "sd"));
+        faculty.add(new Faculty(0L, "pss", "sd"));
+
+        when(facultyRepository.findByColor(any(String.class))).thenReturn(faculty);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/faculties/color?color=sd")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].color").value("sd"))
+                .andExpect(jsonPath("$[1].color").value("sd"))
+                .andExpect(jsonPath("$[2].color").value("sd"));
+
     }
 
     @Test
-    void getAllFaculty() {
+    void getAllFaculty() throws Exception {
+        List<Faculty> faculty = new ArrayList<>();
+        faculty.add(new Faculty(0L, "sps", "sd"));
+        faculty.add(new Faculty(0L, "ssp", "sd"));
+        faculty.add(new Faculty(0L, "pss", "sd"));
+
+        when(facultyRepository.findAll()).thenReturn(faculty);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/faculties/all")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].color").value("sd"))
+                .andExpect(jsonPath("$[1].color").value("sd"))
+                .andExpect(jsonPath("$[2].color").value("sd"));
     }
 
     @Test
-    void findByNameOrColor() {
+    void findByNameOrColor() throws Exception {
+
+        Faculty faculty = new Faculty(0L, "sps", "sd");
+
+
+        when(facultyRepository.findByColorIgnoreCase(any(String.class))).thenReturn(faculty);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/faculties?part=sd")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("sps"))
+                .andExpect(jsonPath("$.color").value("sd"));
+
+        when(facultyRepository.findByColorIgnoreCase(any(String.class))).thenReturn(null);
+        when(facultyRepository.findByNameIgnoreCase(any(String.class))).thenReturn(faculty);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/faculties?part=sd")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("sps"))
+                .andExpect(jsonPath("$.color").value("sd"));
+
     }
 
     @Test
-    void updateFaculty() {
+    void updateFaculty() throws Exception{
+        Faculty faculty = new Faculty(0L, "sps", "sd");
+
+        JSONObject object = new JSONObject();
+        object.put("id",faculty.getId());
+        object.put("name",faculty.getName());
+        object.put("color",faculty.getColor());
+
+        when(facultyRepository.save(any(Faculty.class))).thenReturn(faculty);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/faculties?part=sd")
+                        .content(object.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("sps"))
+                .andExpect(jsonPath("$.color").value("sd"));
     }
 
     @Test
-    void deleteFaculty() {
+    void deleteFaculty() throws Exception{
+        Faculty faculty = new Faculty();
+
+        when(facultyRepository.findById(anyLong())).thenReturn(Optional.of(faculty));
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/faculties/1"))
+                .andExpect(status().isOk());
     }
 }
