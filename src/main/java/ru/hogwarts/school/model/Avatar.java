@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
-@JsonIgnoreProperties(value = "student")
+@JsonIgnoreProperties(value = {"student","data"})
 public class Avatar {
 
 
