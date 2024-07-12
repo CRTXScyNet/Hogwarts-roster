@@ -55,8 +55,8 @@ public class Avatar {
         return data;
     }
 
-    public void setData(byte[] preview) {
-        this.data = preview;
+    public void setData(byte[] data) {
+        this.data = data;
     }
 
     public Student getStudent() {
