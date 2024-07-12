@@ -15,7 +15,7 @@ public class Avatar {
     private long fileSize;
     private String mediaType;
     @Lob
-    private byte[] preview;
+    private byte[] data;
     @OneToOne
     private Student student;
 
@@ -52,11 +52,11 @@ public class Avatar {
     }
 
     public byte[] getPreview() {
-        return preview;
+        return data;
     }
 
     public void setPreview(byte[] preview) {
-        this.preview = preview;
+        this.data = preview;
     }
 
     public Student getStudent() {
