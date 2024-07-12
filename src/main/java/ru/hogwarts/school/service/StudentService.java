@@ -19,13 +19,6 @@ public class StudentService {
         this.facultyRepository = facultyRepository;
     }
 
-//    @PostConstruct
-//    private void init() {
-//        addStudent(new Student(1L,"Harry Potter", 13));
-//        addStudent(new Student(2L, "Hermione Granger", 13));
-//        addStudent(new Student(3L, "Ronald Weasley", 13));
-//    }
-
     public Student addStudent(Student student) {
         return studentRepository.save(student);
     }

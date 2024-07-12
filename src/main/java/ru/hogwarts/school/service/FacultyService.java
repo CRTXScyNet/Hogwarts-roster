@@ -20,19 +20,9 @@ public class FacultyService {
     }
 
     public Faculty addFaculty(Faculty faculty) {
-//        faculty.setId(nextId++);
-//        facultyMap.put(faculty.getId(),faculty);
         return facultyRepository.save(faculty);
     }
 
-//    @PostConstruct
-//    private void init() {
-//        addFaculty(new Faculty(1L, "Griffindor", "orange"));
-//        addFaculty(new Faculty(2L, "Hufflepuff", "yellow"));
-//        addFaculty(new Faculty(3L, "Ravenclaw", "blue"));
-//        addFaculty(new Faculty(4L, "Slytherin", "green"));
-//
-//    }
 
     public Faculty getFaculty(Long id) {
 

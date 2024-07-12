@@ -1,6 +1,7 @@
 package ru.hogwarts.school.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,12 +20,13 @@ import java.nio.file.Path;
 @RestController
 @RequestMapping("/students")
 public class AvatarController {
-
+    @Autowired
     private final AvatarService avatarService;
 
-    public AvatarController(AvatarService service) {
-        this.avatarService = service;
+    public AvatarController(AvatarService avatarService) {
+        this.avatarService = avatarService;
     }
+
 
     @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadAvatar(@PathVariable Long id, @RequestParam MultipartFile avatar) throws IOException {
