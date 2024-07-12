@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/students")
@@ -42,9 +43,9 @@ public class AvatarController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
-        headers.setContentLength(avatar.getPreview().length);
+        headers.setContentLength(avatar.getData().length);
 
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getPreview());
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
     }
 
     @GetMapping(value = "/{id}/avatar")
@@ -61,4 +62,8 @@ public class AvatarController {
         }
     }
 
+    @GetMapping("/avatar/")
+    public Collection<Avatar> getAvatarsPages(@RequestParam("number") Integer pageNumber, @RequestParam("size") Integer pageSize){
+        return avatarService.getAvatars(pageNumber,pageSize);
+    }
 }
