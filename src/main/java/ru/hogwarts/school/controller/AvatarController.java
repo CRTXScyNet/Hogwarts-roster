@@ -44,9 +44,9 @@ public class AvatarController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
-        headers.setContentLength(avatar.getPreview().length);
+        headers.setContentLength(avatar.getData().length);
 
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getPreview());
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
     }
 
     @GetMapping(value = "/{id}/avatar")

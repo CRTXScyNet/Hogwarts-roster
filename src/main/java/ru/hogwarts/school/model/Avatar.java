@@ -51,11 +51,11 @@ public class Avatar {
         this.mediaType = mediaType;
     }
 
-    public byte[] getPreview() {
+    public byte[] getData() {
         return data;
     }
 
-    public void setPreview(byte[] preview) {
+    public void setData(byte[] preview) {
         this.data = preview;
     }
 
