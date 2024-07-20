@@ -9,6 +9,8 @@ import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class StudentService {
@@ -28,7 +30,11 @@ public class StudentService {
 
     public Student getStudent(Long id) {
         logger.info("Был вызван метод 'getStudent'");
-        return studentRepository.findById(id).orElse(null);
+        Student student = studentRepository.findById(id).orElse(null);
+        if (student == null){
+            logger.warn("Студент не обнаружен");
+        }
+        return student;
     }
 
     public Student updateStudent(Student student) {
@@ -40,6 +46,7 @@ public class StudentService {
         logger.info("Был вызван метод 'deleteStudent'");
         Student student = studentRepository.findById(id).orElse(null);
         if (student == null) {
+            logger.warn("Студент не обнаружен");
             return null;
         }
         studentRepository.deleteById(id);
@@ -65,6 +72,7 @@ public class StudentService {
         logger.info("Был вызван метод 'getFaculty'");
         id = studentRepository.findFaculty_IdById(id);
         if (id == null) {
+            logger.warn("Факультет не обнаружен");
             return null;
         }
         return facultyRepository.findById(id).orElse(null);
@@ -83,5 +91,18 @@ public class StudentService {
     public Collection<Student> getLastFiveStudents() {
         logger.info("Был вызван метод 'getLastFiveStudents'");
         return studentRepository.getLastFiveStudents();
+    }
+
+    public List<String> getSortedStudentsNames(){
+        logger.info("Был вызван метод 'getSortedStudentsNames'");
+        return studentRepository.findAll().stream().map(Student::getName).map(String::toUpperCase).sorted().toList();
+    }
+    public Double getAverageAgeOfStudentsWithStream(){
+        logger.info("Был вызван метод 'getAverageAgeOfStudents'");
+        Double aDouble =  studentRepository.findAll().stream().mapToInt(Student::getAge).average().getAsDouble();
+        if (aDouble == null) {
+            logger.warn("Не удалось вычислить средний возраст студентов");
+        }
+        return Math.floor(aDouble);
     }
 }
