@@ -79,7 +79,11 @@ public class FacultyService {
         return studentRepository.findByFacultyId(id);
     }
     public String getLongestFacultyName(){
-        String s = facultyRepository.findAll().stream().map(Faculty::getName).max(Comparator.comparingInt(String::length)).get();
+        String s = facultyRepository.findAll()
+                .stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .get();
         if (s == null){
             logger.warn("Самое длинное название факультета не найдено. Возможно список факультетов пуст.");
         }

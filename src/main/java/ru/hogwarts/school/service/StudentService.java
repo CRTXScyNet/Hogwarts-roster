@@ -95,11 +95,18 @@ public class StudentService {
 
     public List<String> getSortedStudentsNames(){
         logger.info("Был вызван метод 'getSortedStudentsNames'");
-        return studentRepository.findAll().stream().map(Student::getName).map(String::toUpperCase).sorted().toList();
+        return studentRepository.findAll().stream()
+                .map(student -> student.getName().toUpperCase())
+                .filter(name -> name.startsWith("A"))
+                .sorted().toList();
     }
     public Double getAverageAgeOfStudentsWithStream(){
         logger.info("Был вызван метод 'getAverageAgeOfStudents'");
-        Double aDouble =  studentRepository.findAll().stream().mapToInt(Student::getAge).average().getAsDouble();
+        Double aDouble =  studentRepository.findAll()
+                .stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .getAsDouble();
         if (aDouble == null) {
             logger.warn("Не удалось вычислить средний возраст студентов");
         }
