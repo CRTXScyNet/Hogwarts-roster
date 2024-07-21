@@ -1,14 +1,13 @@
-package ru.hogwarts.school.controller;
+package ru.hogwarts.school.controllers;
 
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.service.StudentService;
+import ru.hogwarts.school.models.Faculty;
+import ru.hogwarts.school.models.Student;
+import ru.hogwarts.school.services.StudentService;
 
 import java.util.Collection;
-import java.util.List;
 
 @RestController
 @RequestMapping("/students")
@@ -27,18 +26,12 @@ public class StudentController {
     @GetMapping("/{id}")
     public ResponseEntity<Student> getStudent(@PathVariable Long id) {
         Student student = studentService.getStudent(id);
-        if (student == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(student);
     }
 
     @GetMapping("/{id}/faculty")
     public ResponseEntity<Faculty> getFaculty(@PathVariable long id) {
         Faculty faculty = studentService.getFaculty(id);
-        if (faculty == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(faculty);
     }
 
@@ -74,9 +67,6 @@ public class StudentController {
     @GetMapping("/average-age/with-stream")
     public ResponseEntity<Double> getAverageAgeOfStudentsWithStream(){
         Double d = studentService.getAverageAgeOfStudentsWithStream();
-        if (d == null){
-            ResponseEntity.internalServerError().build();
-        }
         return ResponseEntity.ok(d);
 
     }
@@ -93,9 +83,6 @@ public class StudentController {
     @DeleteMapping("{id}")
     public ResponseEntity<Student> deleteStudent(@PathVariable Long id) {
         Student student = studentService.deleteStudent(id);
-        if (student == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(student);
     }
 
