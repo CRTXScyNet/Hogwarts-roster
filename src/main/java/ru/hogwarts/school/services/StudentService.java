@@ -85,16 +85,17 @@ public class StudentService {
         return studentRepository.getLastFiveStudents();
     }
 
-    public List<String> getSortedStudentsNames(){
+    public List<String> getSortedStudentsNames() {
         logger.info("Был вызван метод 'getSortedStudentsNames'");
         return studentRepository.findAll().stream()
                 .map(student -> student.getName().toUpperCase())
                 .filter(name -> name.startsWith("A"))
                 .sorted().toList();
     }
-    public Double getAverageAgeOfStudentsWithStream(){
+
+    public Double getAverageAgeOfStudentsWithStream() {
         logger.info("Был вызван метод 'getAverageAgeOfStudents'");
-        double aDouble =  studentRepository.findAll()
+        double aDouble = studentRepository.findAll()
                 .stream()
                 .mapToInt(Student::getAge)
                 .average()

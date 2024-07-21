@@ -17,9 +17,8 @@ public class InfoController {
     }
 
     @GetMapping("/random-code")
-    public Long getRandom(){
-
-        return LongStream.iterate(1L, a -> a + 1).limit(1_000_000).reduce(0L,Long::sum);
+    public Long getRandom() {
+        return LongStream.iterate(1L, a -> a + 1).limit(1_000_000).reduce(0L, Long::sum);
     }
     //теперь занимаемое время: 0.012, что в два раза меньше
 

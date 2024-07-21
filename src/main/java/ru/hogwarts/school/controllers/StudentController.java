@@ -44,6 +44,7 @@ public class StudentController {
     public Collection<Student> getAllStudents() {
         return studentService.getAllStudents();
     }
+
     @GetMapping("/all/sorted")
     public Collection<String> getSortedStudentsNames() {
         return studentService.getSortedStudentsNames();
@@ -53,25 +54,27 @@ public class StudentController {
     public Collection<Student> getStudentByAgeBetween(@RequestParam int min, @RequestParam int max) {
         return studentService.findByAgeBetween(min, max);
     }
+
     @GetMapping("/all/amount")
-    public Integer getAmountOfStudents(){
-      return   studentService.getAmountOfStudents();
+    public Integer getAmountOfStudents() {
+        return studentService.getAmountOfStudents();
     }
 
     @GetMapping("/average-age")
-    public Integer getAverageAgeOfStudents(){
+    public Integer getAverageAgeOfStudents() {
         return studentService.getAverageAgeOfStudents();
 
     }
 
     @GetMapping("/average-age/with-stream")
-    public ResponseEntity<Double> getAverageAgeOfStudentsWithStream(){
+    public ResponseEntity<Double> getAverageAgeOfStudentsWithStream() {
         Double d = studentService.getAverageAgeOfStudentsWithStream();
         return ResponseEntity.ok(d);
 
     }
+
     @GetMapping("/get-last-five")
-    public Collection<Student> getLastFiveStudents(){
+    public Collection<Student> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
     }
 
@@ -85,7 +88,6 @@ public class StudentController {
         Student student = studentService.deleteStudent(id);
         return ResponseEntity.ok(student);
     }
-
 
 
 }

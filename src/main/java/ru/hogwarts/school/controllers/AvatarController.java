@@ -65,7 +65,7 @@ public class AvatarController {
     }
 
     @GetMapping("/avatar/")
-    public Collection<Avatar> getAvatarsPages(@RequestParam("number") Integer pageNumber, @RequestParam("size") Integer pageSize){
-        return avatarService.getAvatars(pageNumber,pageSize);
+    public Collection<Avatar> getAvatarsPages(@RequestParam("number") Integer pageNumber, @RequestParam("size") Integer pageSize) {
+        return avatarService.getAvatars(pageNumber, pageSize);
     }
 }

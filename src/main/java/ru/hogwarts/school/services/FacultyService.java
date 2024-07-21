@@ -74,7 +74,8 @@ public class FacultyService {
         logger.info("Был вызван метод 'getStudents'");
         return studentRepository.findByFacultyId(id);
     }
-    public String getLongestFacultyName(){
+
+    public String getLongestFacultyName() {
         return facultyRepository.findAll()
                 .stream()
                 .map(Faculty::getName)

@@ -28,10 +28,12 @@ public class FacultyController {
         Faculty faculty = facultyService.getFaculty(id);
         return ResponseEntity.ok(faculty);
     }
+
     @GetMapping("{id:\\d+}/students")
-    public ResponseEntity<Collection<Student>> getStudents(@PathVariable long id){
+    public ResponseEntity<Collection<Student>> getStudents(@PathVariable long id) {
         return ResponseEntity.ok(facultyService.getStudents(id));
     }
+
     @GetMapping("/color")
     public Collection<Faculty> getFacultyByColor(@RequestParam("color") String color) {
         return facultyService.getFacultyByColor(color);
@@ -41,16 +43,18 @@ public class FacultyController {
     public Collection<Faculty> getAllFaculty() {
         return facultyService.getAllFaculties();
     }
+
     @GetMapping()
-    public ResponseEntity<Faculty> findByNameOrColor(@RequestParam String part){
+    public ResponseEntity<Faculty> findByNameOrColor(@RequestParam String part) {
         Faculty faculty = facultyService.findByNameOrColor(part);
-        if (faculty == null){
+        if (faculty == null) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(faculty);
     }
+
     @GetMapping("/longest-name")
-    public ResponseEntity<String> getLongestName(){
+    public ResponseEntity<String> getLongestName() {
         String s = facultyService.getLongestFacultyName();
         return ResponseEntity.ok(s);
     }
