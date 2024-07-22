@@ -1,14 +1,18 @@
-package ru.hogwarts.school.service;
+package ru.hogwarts.school.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.exceptions.FacultyIsNotFoundException;
+import ru.hogwarts.school.exceptions.StudentIsNotFoundException;
+import ru.hogwarts.school.models.Faculty;
+import ru.hogwarts.school.models.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -28,7 +32,7 @@ public class StudentService {
 
     public Student getStudent(Long id) {
         logger.info("Был вызван метод 'getStudent'");
-        return studentRepository.findById(id).orElse(null);
+        return studentRepository.findById(id).orElseThrow(StudentIsNotFoundException::new);
     }
 
     public Student updateStudent(Student student) {
@@ -38,10 +42,7 @@ public class StudentService {
 
     public Student deleteStudent(Long id) {
         logger.info("Был вызван метод 'deleteStudent'");
-        Student student = studentRepository.findById(id).orElse(null);
-        if (student == null) {
-            return null;
-        }
+        Student student = studentRepository.findById(id).orElseThrow(StudentIsNotFoundException::new);
         studentRepository.deleteById(id);
         return student;
     }
@@ -63,11 +64,10 @@ public class StudentService {
 
     public Faculty getFaculty(Long id) {
         logger.info("Был вызван метод 'getFaculty'");
-        id = studentRepository.findFaculty_IdById(id);
-        if (id == null) {
-            return null;
-        }
-        return facultyRepository.findById(id).orElse(null);
+        Optional<Long> id2 = Optional.of(studentRepository.findFaculty_IdById(id));
+
+        return facultyRepository.findById(id2.orElseThrow(FacultyIsNotFoundException::new))
+                .orElseThrow(FacultyIsNotFoundException::new);
     }
 
     public Integer getAmountOfStudents() {
@@ -83,5 +83,23 @@ public class StudentService {
     public Collection<Student> getLastFiveStudents() {
         logger.info("Был вызван метод 'getLastFiveStudents'");
         return studentRepository.getLastFiveStudents();
+    }
+
+    public List<String> getSortedStudentsNames() {
+        logger.info("Был вызван метод 'getSortedStudentsNames'");
+        return studentRepository.findAll().stream()
+                .map(student -> student.getName().toUpperCase())
+                .filter(name -> name.startsWith("A"))
+                .sorted().toList();
+    }
+
+    public Double getAverageAgeOfStudentsWithStream() {
+        logger.info("Был вызван метод 'getAverageAgeOfStudents'");
+        double aDouble = studentRepository.findAll()
+                .stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElseThrow(StudentIsNotFoundException::new);
+        return Math.floor(aDouble);
     }
 }

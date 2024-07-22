@@ -1,15 +1,16 @@
-package ru.hogwarts.school.service;
+package ru.hogwarts.school.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.mapping.FactoryMethod;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.exceptions.FacultyIsNotFoundException;
+import ru.hogwarts.school.models.Faculty;
+import ru.hogwarts.school.models.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 @Service
 public class FacultyService {
@@ -30,7 +31,7 @@ public class FacultyService {
 
     public Faculty getFaculty(Long id) {
         logger.info("Был вызван метод 'getFaculty'");
-        return facultyRepository.findById(id).orElse(null);
+        return facultyRepository.findById(id).orElseThrow(FacultyIsNotFoundException::new);
     }
 
     public Faculty updateFaculty(Faculty faculty) {
@@ -40,10 +41,7 @@ public class FacultyService {
 
     public Faculty deleteFaculty(Long id) {
         logger.info("Был вызван метод 'deleteFaculty'");
-        Faculty faculty = facultyRepository.findById(id).orElse(null);
-        if (faculty == null){
-            return null;
-        }
+        Faculty faculty = facultyRepository.findById(id).orElseThrow(FacultyIsNotFoundException::new);
         facultyRepository.deleteById(id);
         return faculty;
     }
@@ -75,5 +73,13 @@ public class FacultyService {
     public Collection<Student> getStudents(long id) {
         logger.info("Был вызван метод 'getStudents'");
         return studentRepository.findByFacultyId(id);
+    }
+
+    public String getLongestFacultyName() {
+        return facultyRepository.findAll()
+                .stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElseThrow(FacultyIsNotFoundException::new);
     }
 }

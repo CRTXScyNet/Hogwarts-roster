@@ -1,10 +1,10 @@
-package ru.hogwarts.school.controller;
+package ru.hogwarts.school.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.service.FacultyService;
+import ru.hogwarts.school.models.Faculty;
+import ru.hogwarts.school.models.Student;
+import ru.hogwarts.school.services.FacultyService;
 
 import java.util.Collection;
 
@@ -26,15 +26,14 @@ public class FacultyController {
     @GetMapping("/{id:\\d+}")
     public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
         Faculty faculty = facultyService.getFaculty(id);
-        if (faculty == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(faculty);
     }
+
     @GetMapping("{id:\\d+}/students")
-    public ResponseEntity<Collection<Student>> getStudents(@PathVariable long id){
+    public ResponseEntity<Collection<Student>> getStudents(@PathVariable long id) {
         return ResponseEntity.ok(facultyService.getStudents(id));
     }
+
     @GetMapping("/color")
     public Collection<Faculty> getFacultyByColor(@RequestParam("color") String color) {
         return facultyService.getFacultyByColor(color);
@@ -44,13 +43,20 @@ public class FacultyController {
     public Collection<Faculty> getAllFaculty() {
         return facultyService.getAllFaculties();
     }
+
     @GetMapping()
-    public ResponseEntity<Faculty> findByNameOrColor(@RequestParam String part){
+    public ResponseEntity<Faculty> findByNameOrColor(@RequestParam String part) {
         Faculty faculty = facultyService.findByNameOrColor(part);
-        if (faculty == null){
+        if (faculty == null) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(faculty);
+    }
+
+    @GetMapping("/longest-name")
+    public ResponseEntity<String> getLongestName() {
+        String s = facultyService.getLongestFacultyName();
+        return ResponseEntity.ok(s);
     }
 
     @PutMapping
@@ -61,9 +67,6 @@ public class FacultyController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id) {
         Faculty faculty = facultyService.deleteFaculty(id);
-        if (faculty == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(faculty);
     }
 

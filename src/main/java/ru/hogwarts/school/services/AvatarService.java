@@ -1,4 +1,4 @@
-package ru.hogwarts.school.service;
+package ru.hogwarts.school.services;
 
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.hogwarts.school.model.Avatar;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.models.Avatar;
+import ru.hogwarts.school.models.Student;
 import ru.hogwarts.school.repositories.AvatarRepository;
 
 import java.io.IOException;
