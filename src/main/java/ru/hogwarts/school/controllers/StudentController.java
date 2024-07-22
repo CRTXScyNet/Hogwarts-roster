@@ -92,7 +92,7 @@ public class StudentController {
     }
 
     @GetMapping("/print-parallel")
-    public void printStudentsInParallel(){
+    public void printStudentsInParallel() {
         List<Student> studentList = new ArrayList<>(getAllStudents());
         System.out.println(studentList.get(0).getName());
         System.out.println(studentList.get(1).getName());
@@ -106,9 +106,10 @@ public class StudentController {
         }).start();
     }
 
-private final Object studentSynchronizer = new Object();
+    private final Object studentSynchronizer = new Object();
+
     @GetMapping("/print-synchronized")
-    public void printStudentsSynchronized(){
+    public void printStudentsSynchronized() {
         List<Student> studentList = new ArrayList<>(getAllStudents());
         synchronizedMethod(studentList.get(0));
         synchronizedMethod(studentList.get(1));
@@ -121,8 +122,9 @@ private final Object studentSynchronizer = new Object();
             synchronizedMethod(studentList.get(5));
         }).start();
     }
-    public void synchronizedMethod(Student student){
-        synchronized (studentSynchronizer){
+
+    public void synchronizedMethod(Student student) {
+        synchronized (studentSynchronizer) {
             System.out.println(student.getName());
         }
     }
