@@ -7,7 +7,9 @@ import ru.hogwarts.school.models.Faculty;
 import ru.hogwarts.school.models.Student;
 import ru.hogwarts.school.services.StudentService;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/students")
@@ -89,5 +91,41 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
+    @GetMapping("/print-parallel")
+    public void printStudentsInParallel() {
+        List<Student> studentList = new ArrayList<>(getAllStudents());
+        System.out.println(studentList.get(0).getName());
+        System.out.println(studentList.get(1).getName());
+        new Thread(() -> {
+            System.out.println(studentList.get(2).getName());
+            System.out.println(studentList.get(3).getName());
+        }).start();
+        new Thread(() -> {
+            System.out.println(studentList.get(4).getName());
+            System.out.println(studentList.get(5).getName());
+        }).start();
+    }
 
+    private final Object studentSynchronizer = new Object();
+
+    @GetMapping("/print-synchronized")
+    public void printStudentsSynchronized() {
+        List<Student> studentList = new ArrayList<>(getAllStudents());
+        synchronizedMethod(studentList.get(0));
+        synchronizedMethod(studentList.get(1));
+        new Thread(() -> {
+            synchronizedMethod(studentList.get(2));
+            synchronizedMethod(studentList.get(3));
+        }).start();
+        new Thread(() -> {
+            synchronizedMethod(studentList.get(4));
+            synchronizedMethod(studentList.get(5));
+        }).start();
+    }
+
+    public void synchronizedMethod(Student student) {
+        synchronized (studentSynchronizer) {
+            System.out.println(student.getName());
+        }
+    }
 }
