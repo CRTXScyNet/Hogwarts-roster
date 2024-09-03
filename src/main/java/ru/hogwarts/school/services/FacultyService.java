@@ -24,40 +24,40 @@ public class FacultyService {
     }
 
     public Faculty addFaculty(Faculty faculty) {
-        logger.info("Был вызван метод 'addFaculty'");
+        logger.info("Method 'addFaculty' was called");
         return facultyRepository.save(faculty);
     }
 
 
     public Faculty getFaculty(Long id) {
-        logger.info("Был вызван метод 'getFaculty'");
+        logger.info("Method 'getFaculty' was called");
         return facultyRepository.findById(id).orElseThrow(FacultyIsNotFoundException::new);
     }
 
     public Faculty updateFaculty(Faculty faculty) {
-        logger.info("Был вызван метод 'updateFaculty'");
+        logger.info("Method 'updateFaculty' was called");
         return facultyRepository.save(faculty);
     }
 
     public Faculty deleteFaculty(Long id) {
-        logger.info("Был вызван метод 'deleteFaculty'");
+        logger.info("Method 'deleteFaculty' was called");
         Faculty faculty = facultyRepository.findById(id).orElseThrow(FacultyIsNotFoundException::new);
         facultyRepository.deleteById(id);
         return faculty;
     }
 
     public Collection<Faculty> getFacultyByColor(String color) {
-        logger.info("Был вызван метод 'getFacultyByColor'");
+        logger.info("Method 'getFacultyByColor' was called");
         return facultyRepository.findByColor(color);
     }
 
     public Collection<Faculty> getAllFaculties() {
-        logger.info("Был вызван метод 'getAllFaculties'");
+        logger.info("Method 'getAllFaculties' was called");
         return facultyRepository.findAll();
     }
 
     public Faculty findByNameOrColor(String string) {
-        logger.info("Был вызван метод 'findByNameOrColor'");
+        logger.info("Method 'findByNameOrColor' was called");
         Faculty faculty;
         if (string != null && !string.isBlank()) {
             faculty = facultyRepository.findByNameIgnoreCase(string);
@@ -71,7 +71,7 @@ public class FacultyService {
     }
 
     public Collection<Student> getStudents(long id) {
-        logger.info("Был вызван метод 'getStudents'");
+        logger.info("Method 'getStudents' was called");
         return studentRepository.findByFacultyId(id);
     }
 
