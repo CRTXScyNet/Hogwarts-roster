@@ -54,23 +54,23 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(Long studentId) {
-        logger.info("Был вызван метод 'findAvatar'");
+        logger.info("method 'findAvatar' was called ");
         return avatarRepository.findByStudentId(studentId).orElse(null);
     }
 
     private Avatar getAvatar(Long studentId) {
-        logger.info("Был вызван метод 'getAvatar'");
+        logger.info("Method 'getAvatar' was called");
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     private String getExtension(String s) {
-        logger.info("Был вызван метод 'getExtension'");
+        logger.info("Method 'getExtension' was called");
         int dot = s.lastIndexOf('.');
         return s.substring(dot + 1);
     }
 
     public Collection<Avatar> getAvatars(Integer pageNumber, Integer pageSize) {
-        logger.info("Был вызван метод 'getAvatars'");
+        logger.info("Method 'getAvatars' was called");
         PageRequest request = PageRequest.of(pageNumber, pageSize);
         return avatarRepository.findAll(request).getContent();
     }
