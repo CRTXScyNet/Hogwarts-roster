@@ -1,4 +1,4 @@
-Hogwarts School student information management application
+Hogwarts School student information management application.
 
 REST API web application based on Spring Boot.
 Maven was used for building. 
